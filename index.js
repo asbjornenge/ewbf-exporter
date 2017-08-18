@@ -9,27 +9,9 @@ var argv = require('minimist')(process.argv.slice(2), {
   }
 })
 var Prometheus = require('prometheus-client')
+var request = require('request')
 
-/** Prometheus (monitoring) 
-
-results: []
-
-{
-gpuid: 0,
-cudaid: 0,
-busid: "0000:01:00.0",
-name: "GeForce GTX 1070",
-gpu_status: 2,
-solver: 0,
-temperature: 74,
-gpu_power_usage: 174,
-speed_sps: 436,
-accepted_shares: 142,
-rejected_shares: 5,
-start_time: 1503087595
-},
-
-**/
+/** Prometheus (monitoring) **/
 
 var prom = new Prometheus()
 var gauges = {}
@@ -54,13 +36,27 @@ function createGauge(index) {
   return gpu_gauge
 }
 
-function updateGauge(index) {
-
+function updateGauge(data, index) {
+  if (!gauges[index]) gauges[index] = createGauge(index)
+  g = gauges[index]
+  g.temp.set({ period: argv.scrape_interval }, data.temperature)
+  g.power.set({ period: argv.scrape_interval }, data.gpu_power_usage)
+  g.hashrate.set({ period: argv.scrape_interval }, data.speed_sps)
 }
 
 function scrape() {
-  console.log(`scraping`)
-  loop() 
+  request(`http://${argv.miner_host}:${argv.miner_port}/getstat`, (err, response, body) => {
+    if (err) {
+      console.error(err)
+      return loop()
+    }
+    try {
+      JSON.parse(body).result.forEach(updateGauge)
+    } catch(err) {
+      console.error(err)
+    }
+    loop()
+  })
 }
 
 function loop() {
