@@ -1,11 +1,11 @@
 # EWBF Exporter 
 
-Exporter for the EWBF miner stats to [prometheus](https://prometheus.io/) metrics.
+[Prometheus](https://prometheus.io/) exporter for the EWBF miner stats.
 
 ## Use
 
 ```sh
-docker run -it asbjornenge/ewbf-exporter --miner_host 192.168.2.3 --miner_port 42000
+docker run -p 9100:9100 -it asbjornenge/ewbf-exporter:1.0.0 --miner_host 192.168.2.3 --miner_port 42000
 ```
 
 ## Tip jar 
