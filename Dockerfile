@@ -1,6 +1,6 @@
-FROM node:4-slim
+FROM node:8-slim
 RUN mkdir -p /app
 WORKDIR /app
 ADD . /app
 RUN yarn install
-CMD ["node","index.js"]
+ENTRYPOINT ["node","index.js"]

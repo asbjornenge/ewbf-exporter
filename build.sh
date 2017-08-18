@@ -1,3 +1,3 @@
 #!/bin/sh
-VERSION=0.0.1
-docker build -t registry.taghub:5000/sensorapp-endpoint:$VERSION .
+VERSION=1.0.0
+docker build -t asbjornenge/ewbf-exporter:$VERSION .
