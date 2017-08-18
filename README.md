@@ -8,7 +8,7 @@
 docker run -p 9100:9100 -it asbjornenge/ewbf-exporter:1.0.0 --miner_host 192.168.2.3 --miner_port 42000
 ```
 
-## Tip jar 
+## Jar 
 
 ```
 ZEC: t1Tmfp4aj4LSwxMxUUWFKqnuVBwjmvqVJGk 
